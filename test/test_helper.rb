@@ -11,5 +11,19 @@ module ActiveSupport
     fixtures :all
 
     # Add more helper methods to be used by all tests here...
+
+    def token_from(user)
+      post user_session_path, params: {
+        user: {
+          email: user.email,
+          password: "password" # Assuming the password is "password" for test users
+        }
+      }
+      assert_response :success, "Failed to log in as #{user.email}"
+
+      token = response.headers["authorization"]
+
+      token.gsub(/Bearer /, "")
+    end
   end
 end
