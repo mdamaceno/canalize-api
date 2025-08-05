@@ -1,0 +1,8 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  identifier: "b08cb822-723d-11f0-95e5-03a7b57664f2"
+  first_name: Maria
+  last_name: Joaquina
+  birthdate: 2025-08-02
+  user: one

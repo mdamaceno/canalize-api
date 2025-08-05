@@ -4,8 +4,9 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+one:
+  identifier: "a6d6a1a8-723d-11f0-8725-d711a4c3bad5"
+  name: "John Doe"
+  email: "johndoe@email.com"
+  encrypted_password: <%= User.new.send(:password_digest, 'password') %>
+  jti: "abc12345-6789-0123-4567-89abcdef0123"

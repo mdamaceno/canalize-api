@@ -19,4 +19,6 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   get "/me", to: "users#me", as: :me
+
+  resources :contacts, only: [:index, :show, :create, :update, :destroy]
 end
