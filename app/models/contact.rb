@@ -4,8 +4,8 @@ class Contact < ApplicationRecord
   has_many :email_addresses, dependent: :destroy
   has_many :phone_numbers, dependent: :destroy
 
-  validates :first_name, presence: true, length: { maximum: 255 }
-  validates :last_name, length: { maximum: 255 }
+  validates :first_name, presence: true, length: { minimum: 3, maximum: 255 }
+  validates :last_name, length: { minimum: 3, maximum: 255 }
 
   def self.prepare_for_create(params)
     contact = self.new
@@ -34,7 +34,7 @@ class Contact < ApplicationRecord
 
   def save_with_children
     ActiveRecord::Base.transaction do
-      if save
+      if save!
         email_addresses.each do |email_address|
           email_address.contact = self
           email_address.save!
@@ -44,8 +44,6 @@ class Contact < ApplicationRecord
           phone_number.contact = self
           phone_number.save!
         end
-      else
-        raise ActiveRecord::Rollback
       end
     end
 

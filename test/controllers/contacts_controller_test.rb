@@ -33,6 +33,25 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, contact.phone_numbers.count
   end
 
+  test "should not create contact with invalid attributes" do
+    post contacts_url, params: {
+      contact: {
+        first_name: "",
+        last_name: "Invalid",
+        birthdate: "not-a-date",
+        email_addresses: [{ email: "invalid-email" }],
+        phone_numbers: [{ country_code: "invalid", main: "123" }]
+      },
+    }, headers: {
+      "Authorization" => "Bearer #{@token}",
+    }
+
+    assert_response :unprocessable_content
+    response_data = JSON.parse(response.body)
+    assert response_data["errors"].present?
+    assert_includes response_data["errors"], "First name can't be blank"
+  end
+
   test "should update contact with valid attributes" do
     contact = contacts(:one)
 
@@ -53,6 +72,25 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Updated", contact.first_name
     assert_equal "Name", contact.last_name
     assert_equal "1995-05-05", contact.birthdate.to_s
+  end
+
+  test "should not update contact with invalid attributes" do
+    contact = contacts(:one)
+
+    patch contact_url(contact.identifier), params: {
+      contact: {
+        first_name: "",
+        last_name: "Invalid",
+        birthdate: "not-a-date"
+      }
+    }, headers: {
+      "Authorization" => "Bearer #{@token}",
+    }
+
+    assert_response :unprocessable_content
+    response_data = JSON.parse(response.body)
+    assert response_data["errors"].present?
+    assert_includes response_data["errors"], "First name can't be blank"
   end
 
   test "should destroy contact" do
