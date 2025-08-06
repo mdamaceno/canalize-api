@@ -30,4 +30,27 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "1234567890", contact.phone_numbers.first.main
     assert_equal 1, contact.phone_numbers.count
   end
+
+  test "should update contact with valid attributes" do
+    token = token_from(users(:one))
+    contact = contacts(:one)
+
+    patch contact_url(contact.identifier), params: {
+      contact: {
+        first_name: "Updated",
+        last_name: "Name",
+        birthdate: "1995-05-05"
+      }
+    }, headers: {
+      "Authorization" => "Bearer #{token}",
+    }
+
+    assert_response :success
+    response_data = JSON.parse(response.body)
+    assert response_data["data"].present?
+    contact.reload
+    assert_equal "Updated", contact.first_name
+    assert_equal "Name", contact.last_name
+    assert_equal "1995-05-05", contact.birthdate.to_s
+  end
 end

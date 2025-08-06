@@ -18,11 +18,9 @@ class ContactsController < ApplicationController
   end
 
   def update
-    if @contact.update(update_contact_params)
-      redirect_to @contact, notice: 'Contact was successfully updated.'
-    else
-      render :edit
-    end
+    return ok_response(@contact, status: :ok) if @contact.update(update_contact_params)
+
+    error_response(@contact.errors.full_messages)
   end
 
   def destroy
