@@ -3,9 +3,11 @@ require "test_helper"
 class ContactsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
-  test "should create contact with valid attributes" do
-    token = token_from(users(:one))
+  setup do
+    @token = token_from(users(:one))
+  end
 
+  test "should create contact with valid attributes" do
     post contacts_url, params: {
       contact: {
         first_name: "Jane",
@@ -15,7 +17,7 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
         phone_numbers: [{ country_code: "+55", main: "1234567890" }]
       },
     }, headers: {
-      "Authorization" => "Bearer #{token}",
+      "Authorization" => "Bearer #{@token}",
     }
 
     assert_response :created
@@ -32,7 +34,6 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update contact with valid attributes" do
-    token = token_from(users(:one))
     contact = contacts(:one)
 
     patch contact_url(contact.identifier), params: {
@@ -42,7 +43,7 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
         birthdate: "1995-05-05"
       }
     }, headers: {
-      "Authorization" => "Bearer #{token}",
+      "Authorization" => "Bearer #{@token}",
     }
 
     assert_response :success
@@ -52,5 +53,16 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Updated", contact.first_name
     assert_equal "Name", contact.last_name
     assert_equal "1995-05-05", contact.birthdate.to_s
+  end
+
+  test "should destroy contact" do
+    contact = contacts(:one)
+
+    assert_difference('Contact.count', -1) do
+      delete contact_url(contact.identifier), headers: { "Authorization" => "Bearer #{@token}" }
+    end
+
+    assert_response :no_content
+    assert_not Contact.exists?(contact.id), "Contact should be deleted"
   end
 end
