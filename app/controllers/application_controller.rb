@@ -5,7 +5,7 @@ class ApplicationController < ActionController::API
     render json: { sucess: true, data: data }, status: status
   end
 
-  def error_response(errors, status: :unprocessable_entity)
+  def error_response(errors, status: :unprocessable_content)
     render json: { success: false, errors: errors }, status: status
   end
 
