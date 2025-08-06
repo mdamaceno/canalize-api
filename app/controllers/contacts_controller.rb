@@ -12,11 +12,9 @@ class ContactsController < ApplicationController
   def create
     @contact = current_user.contacts.prepare_for_create(create_contact_params)
 
-    if @contact.save_with_children
-      render json: {data: @contact}, status: :created
-    else
-      render json: {errors: @contact.errors.full_messages}, status: :unprocessable_entity
-    end
+    return ok_response(@contact, status: :created) if @contact.save_with_children
+
+    error_response(@contact.errors.full_messages)
   end
 
   def update
