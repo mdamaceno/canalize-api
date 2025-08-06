@@ -7,6 +7,31 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
     @token = token_from(users(:one))
   end
 
+  test "should get index" do
+    get contacts_url, headers: { "Authorization" => "Bearer #{@token}" }
+    assert_response :success
+
+    response_data = JSON.parse(response.body)
+    assert response_data["data"].present?
+    assert response_data["data"].is_a?(Array)
+    assert response_data["data"].first["identifier"].present?
+  end
+
+  test "should show contact" do
+    contact = contacts(:one)
+    get contact_url(contact.identifier), headers: { "Authorization" => "Bearer #{@token}" }
+
+    assert_response :success
+    response_data = JSON.parse(response.body)
+    assert response_data["data"].present?
+    assert_equal contact.identifier, response_data["data"]["identifier"]
+    assert_equal contact.first_name, response_data["data"]["first_name"]
+    assert_equal contact.last_name, response_data["data"]["last_name"]
+    assert_equal contact.birthdate.to_s, response_data["data"]["birthdate"]
+    assert response_data["data"]["email_addresses"].is_a?(Array)
+    assert response_data["data"]["phone_numbers"].is_a?(Array)
+  end
+
   test "should create contact with valid attributes" do
     post contacts_url, params: {
       contact: {

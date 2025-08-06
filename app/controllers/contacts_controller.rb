@@ -3,18 +3,21 @@ class ContactsController < ApplicationController
   before_action :set_contact, only: [ :show, :update, :destroy ]
 
   def index
-    @contacts = current_user.contacts.all
+    contacts = current_user.contacts.all
+
+    ok_response(contacts.map { |contact| ContactSerializer.new(contact).as_json })
   end
 
   def show
+    ok_response(ContactSerializer.new(@contact).as_json)
   end
 
   def create
-    @contact = current_user.contacts.prepare_for_create(create_contact_params)
+    contact = current_user.contacts.prepare_for_create(create_contact_params)
 
-    return ok_response(@contact, status: :created) if @contact.save_with_children
+    return ok_response(contact, status: :created) if contact.save_with_children
 
-    error_response(@contact.errors.full_messages)
+    error_response(contact.errors.full_messages)
   end
 
   def update
