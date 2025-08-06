@@ -9,6 +9,6 @@ class CreatePhoneNumbers < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :phone_numbers, [:country_code, :main, :contact_id], unique: true
+    add_index :phone_numbers, [ :country_code, :main, :contact_id ], unique: true
   end
 end

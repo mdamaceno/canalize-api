@@ -8,8 +8,8 @@ class ContactTest < ActiveSupport::TestCase
     email2 = EmailAddress.new(email: Faker::Internet.email)
     phone1 = PhoneNumber.new(country_code: "+1", main: "1234567890")
     phone2 = PhoneNumber.new(country_code: "+1", main: "0987654321")
-    contact.email_addresses << [email1, email2]
-    contact.phone_numbers << [phone1, phone2]
+    contact.email_addresses << [ email1, email2 ]
+    contact.phone_numbers << [ phone1, phone2 ]
 
     assert contact.save_with_children
     assert contact.persisted?

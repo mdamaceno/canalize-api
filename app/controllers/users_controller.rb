@@ -13,7 +13,7 @@ class UsersController < ApplicationController
         updated_at: user.updated_at
       }, status: :ok
     else
-      render json: { error: 'User not found' }, status: :not_found
+      render json: { error: "User not found" }, status: :not_found
     end
   end
 end

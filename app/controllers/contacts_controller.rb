@@ -1,6 +1,6 @@
 class ContactsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_contact, only: [:show, :update, :destroy]
+  before_action :set_contact, only: [ :show, :update, :destroy ]
 
   def index
     @contacts = current_user.contacts.all
@@ -35,7 +35,7 @@ class ContactsController < ApplicationController
   end
 
   def create_contact_params
-    params.require(:contact).permit(:first_name, :last_name, :birthdate, email_addresses: [:email, :label_id], phone_numbers: [:country_code, :main, :label_id])
+    params.require(:contact).permit(:first_name, :last_name, :birthdate, email_addresses: [ :email, :label_id ], phone_numbers: [ :country_code, :main, :label_id ])
   end
 
   def update_contact_params

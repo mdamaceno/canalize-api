@@ -13,11 +13,11 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
         first_name: "Jane",
         last_name: "Smith",
         birthdate: "1990-01-01",
-        email_addresses: [{ email: "email1@email.com"}],
-        phone_numbers: [{ country_code: "+55", main: "1234567890" }]
-      },
+        email_addresses: [ { email: "email1@email.com" } ],
+        phone_numbers: [ { country_code: "+55", main: "1234567890" } ]
+      }
     }, headers: {
-      "Authorization" => "Bearer #{@token}",
+      "Authorization" => "Bearer #{@token}"
     }
 
     assert_response :created
@@ -39,11 +39,11 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
         first_name: "",
         last_name: "Invalid",
         birthdate: "not-a-date",
-        email_addresses: [{ email: "invalid-email" }],
-        phone_numbers: [{ country_code: "invalid", main: "123" }]
-      },
+        email_addresses: [ { email: "invalid-email" } ],
+        phone_numbers: [ { country_code: "invalid", main: "123" } ]
+      }
     }, headers: {
-      "Authorization" => "Bearer #{@token}",
+      "Authorization" => "Bearer #{@token}"
     }
 
     assert_response :unprocessable_content
@@ -62,7 +62,7 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
         birthdate: "1995-05-05"
       }
     }, headers: {
-      "Authorization" => "Bearer #{@token}",
+      "Authorization" => "Bearer #{@token}"
     }
 
     assert_response :success
@@ -84,7 +84,7 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
         birthdate: "not-a-date"
       }
     }, headers: {
-      "Authorization" => "Bearer #{@token}",
+      "Authorization" => "Bearer #{@token}"
     }
 
     assert_response :unprocessable_content
@@ -96,7 +96,7 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
   test "should destroy contact" do
     contact = contacts(:one)
 
-    assert_difference('Contact.count', -1) do
+    assert_difference("Contact.count", -1) do
       delete contact_url(contact.identifier), headers: { "Authorization" => "Bearer #{@token}" }
     end
 
