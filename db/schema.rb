@@ -24,6 +24,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_02_212754) do
   end
 
   create_table "email_addresses", force: :cascade do |t|
+    t.string "identifier", null: false
     t.string "email", null: false
     t.integer "contact_id", null: false
     t.integer "label_id"
@@ -31,18 +32,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_02_212754) do
     t.datetime "updated_at", null: false
     t.index ["contact_id"], name: "index_email_addresses_on_contact_id"
     t.index ["email", "contact_id"], name: "index_email_addresses_on_email_and_contact_id", unique: true
+    t.index ["identifier"], name: "index_email_addresses_on_identifier", unique: true
     t.index ["label_id"], name: "index_email_addresses_on_label_id"
   end
 
   create_table "labels", force: :cascade do |t|
+    t.string "identifier", null: false
     t.string "name"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["identifier"], name: "index_labels_on_identifier", unique: true
     t.index ["user_id"], name: "index_labels_on_user_id"
   end
 
   create_table "phone_numbers", force: :cascade do |t|
+    t.string "identifier", null: false
     t.integer "country_code", null: false
     t.string "main", null: false
     t.integer "contact_id", null: false
@@ -51,6 +56,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_02_212754) do
     t.datetime "updated_at", null: false
     t.index ["contact_id"], name: "index_phone_numbers_on_contact_id"
     t.index ["country_code", "main", "contact_id"], name: "index_phone_numbers_on_country_code_and_main_and_contact_id", unique: true
+    t.index ["identifier"], name: "index_phone_numbers_on_identifier", unique: true
     t.index ["label_id"], name: "index_phone_numbers_on_label_id"
   end
 
