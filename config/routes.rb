@@ -22,5 +22,6 @@ Rails.application.routes.draw do
 
   resources :contacts do
     resources :email_addresses, except: [ :show ]
+    resources :phone_numbers, except: [ :show ]
   end
 end
