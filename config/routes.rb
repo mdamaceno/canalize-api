@@ -20,5 +20,7 @@ Rails.application.routes.draw do
 
   get "/me", to: "users#me", as: :me
 
-  resources :contacts, only: [ :index, :show, :create, :update, :destroy ]
+  resources :contacts do
+    resources :email_addresses, except: [ :show ]
+  end
 end

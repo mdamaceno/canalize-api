@@ -1,0 +1,9 @@
+work:
+  identifier: "19d70bda-73aa-11f0-845a-a31e9c283e45"
+  name: "Work"
+  user: one
+
+personal:
+  identifier: "5c37d89c-73aa-11f0-a5bf-eb1c3ff80678"
+  name: "Personal"
+  user: one

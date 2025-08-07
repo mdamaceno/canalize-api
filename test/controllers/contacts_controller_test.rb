@@ -5,10 +5,13 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @token = token_from(users(:one))
+    @headers = {
+      "Authorization" => "Bearer #{@token}"
+    }
   end
 
   test "should get index" do
-    get contacts_url, headers: { "Authorization" => "Bearer #{@token}" }
+    get contacts_url, headers: @headers
     assert_response :success
 
     response_data = JSON.parse(response.body)
@@ -19,7 +22,7 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
 
   test "should show contact" do
     contact = contacts(:one)
-    get contact_url(contact.identifier), headers: { "Authorization" => "Bearer #{@token}" }
+    get contact_url(contact.identifier), headers: @headers
 
     assert_response :success
     response_data = JSON.parse(response.body)
@@ -41,9 +44,7 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
         email_addresses: [ { email: "email1@email.com" } ],
         phone_numbers: [ { country_code: "+55", main: "1234567890" } ]
       }
-    }, headers: {
-      "Authorization" => "Bearer #{@token}"
-    }
+    }, headers: @headers
 
     assert_response :created
     response_data = JSON.parse(response.body)
@@ -67,9 +68,7 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
         email_addresses: [ { email: "invalid-email" } ],
         phone_numbers: [ { country_code: "invalid", main: "123" } ]
       }
-    }, headers: {
-      "Authorization" => "Bearer #{@token}"
-    }
+    }, headers: @headers
 
     assert_response :unprocessable_content
     response_data = JSON.parse(response.body)
@@ -86,9 +85,7 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
         last_name: "Name",
         birthdate: "1995-05-05"
       }
-    }, headers: {
-      "Authorization" => "Bearer #{@token}"
-    }
+    }, headers: @headers
 
     assert_response :success
     response_data = JSON.parse(response.body)
@@ -108,9 +105,7 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
         last_name: "Invalid",
         birthdate: "not-a-date"
       }
-    }, headers: {
-      "Authorization" => "Bearer #{@token}"
-    }
+    }, headers: @headers
 
     assert_response :unprocessable_content
     response_data = JSON.parse(response.body)
@@ -122,7 +117,7 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
     contact = contacts(:one)
 
     assert_difference("Contact.count", -1) do
-      delete contact_url(contact.identifier), headers: { "Authorization" => "Bearer #{@token}" }
+      delete contact_url(contact.identifier), headers: @headers
     end
 
     assert_response :no_content

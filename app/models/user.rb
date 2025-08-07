@@ -8,5 +8,6 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: self
 
   has_many :contacts, dependent: :destroy
+  has_many :email_addresses, through: :contacts
   has_many :labels, dependent: :destroy
 end
